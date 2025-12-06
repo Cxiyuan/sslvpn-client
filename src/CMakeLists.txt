@@ -230,7 +230,7 @@ install(CODE "
     include(BundleUtilities)
     if(APPLE)
         set(BU_CHMOD_BUNDLE_ITEMS on)
+        fixup_bundle(\"${APPS}\" \"${additionalLib}\" \"${libSearchDirs}\")
     endif()
-    fixup_bundle(\"${APPS}\" \"${additionalLib}\" \"${libSearchDirs}\")
     " DESTINATION . COMPONENT App
 )
