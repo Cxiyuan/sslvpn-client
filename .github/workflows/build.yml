@@ -24,7 +24,6 @@ jobs:
         install: >-
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-cmake
-          mingw-w64-x86_64-make
           mingw-w64-x86_64-gnutls
           mingw-w64-x86_64-spdlog
           mingw-w64-x86_64-qt5-base
@@ -36,6 +35,7 @@ jobs:
           autoconf
           automake
           libtool
+          make
           git
     
     - name: Build and Install OpenConnect
