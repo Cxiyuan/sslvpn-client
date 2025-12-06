@@ -85,7 +85,7 @@ jobs:
       shell: msys2 {0}
       run: |
         cd build
-        make avpn -j4
+        make -j4
     
     - name: Package Windows
       shell: msys2 {0}
