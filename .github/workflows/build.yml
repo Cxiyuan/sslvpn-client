@@ -16,15 +16,6 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '5.15.2'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_mingw81'
-        modules: 'qtbase qttools'
-    
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
       with:
@@ -37,7 +28,9 @@ jobs:
           mingw-w64-x86_64-openconnect
           mingw-w64-x86_64-gnutls
           mingw-w64-x86_64-spdlog
-          mingw-w64-x86_64-qt5
+          mingw-w64-x86_64-qt5-base
+          mingw-w64-x86_64-qt5-tools
+          mingw-w64-x86_64-qt5-svg
     
     - name: Configure CMake
       shell: msys2 {0}
@@ -50,7 +43,14 @@ jobs:
       shell: msys2 {0}
       run: |
         cd build
-        cmake --build . --config Release
+        cmake --build . --config Release -j4
+    
+    - name: Package Windows
+      shell: msys2 {0}
+      run: |
+        cd build/src
+        cp /mingw64/bin/*.dll . || true
+        ls -la
     
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
@@ -58,11 +58,10 @@ jobs:
         name: avpn-windows-x64
         path: |
           build/src/avpn.exe
-          build/src/*.dll
         retention-days: 7
 
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
     - uses: actions/checkout@v4
@@ -77,11 +76,20 @@ jobs:
           build-essential \
           qtbase5-dev \
           qttools5-dev \
+          qttools5-dev-tools \
           libqt5svg5-dev \
           libopenconnect-dev \
           libgnutls28-dev \
-          libspdlog-dev \
-          pkg-config
+          pkg-config \
+          git
+    
+    - name: Install spdlog
+      run: |
+        git clone https://github.com/gabime/spdlog.git
+        cd spdlog
+        mkdir build && cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        sudo make -j$(nproc) install
     
     - name: Configure CMake
       run: |
@@ -102,7 +110,7 @@ jobs:
         retention-days: 7
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
     - uses: actions/checkout@v4
@@ -111,80 +119,58 @@ jobs:
     
     - name: Install Dependencies
       run: |
-        brew install qt@5 openconnect gnutls spdlog cmake
-        echo "Qt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5" >> $GITHUB_ENV
+        brew install qt@5 openconnect gnutls spdlog cmake pkg-config
     
     - name: Configure CMake
       run: |
+        export Qt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5
+        export PKG_CONFIG_PATH=$(brew --prefix openconnect)/lib/pkgconfig:$(brew --prefix gnutls)/lib/pkgconfig
         mkdir build
         cd build
         cmake .. \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=$(brew --prefix qt@5)
+          -DCMAKE_PREFIX_PATH=$(brew --prefix qt@5) \
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
     
     - name: Build
       run: |
         cd build
         make -j$(sysctl -n hw.ncpu)
     
-    - name: Create DMG
+    - name: Create App Bundle
       run: |
-        cd build
-        macdeployqt src/avpn.app -dmg
+        cd build/src
+        $(brew --prefix qt@5)/bin/macdeployqt avpn.app
     
     - name: Upload macOS Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-macos-x64
-        path: build/src/avpn.dmg
+        path: build/src/avpn.app
         retention-days: 7
 
   release:
     needs: [build-windows, build-linux, build-macos]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    permissions:
+      contents: write
     
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
     
+    - name: Display structure of downloaded files
+      run: ls -R
+    
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: v1.5.3-${{ github.run_number }}
-        release_name: aVPN v1.5.3 Build ${{ github.run_number }}
+        name: aVPN v1.5.3 Build ${{ github.run_number }}
         draft: false
         prerelease: false
-    
-    - name: Upload Windows Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./avpn-windows-x64/avpn.exe
-        asset_name: avpn-windows-x64.exe
-        asset_content_type: application/octet-stream
-    
-    - name: Upload Linux Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./avpn-linux-x64/avpn
-        asset_name: avpn-linux-x64
-        asset_content_type: application/octet-stream
-    
-    - name: Upload macOS Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./avpn-macos-x64/avpn.dmg
-        asset_name: avpn-macos-x64.dmg
-        asset_content_type: application/octet-stream
+        files: |
+          avpn-windows-x64/avpn.exe
+          avpn-linux-x64/avpn
+          avpn-macos-x64/**/*
