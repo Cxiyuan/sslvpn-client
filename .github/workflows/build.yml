@@ -90,22 +90,15 @@ jobs:
     - name: Package Windows
       shell: msys2 {0}
       run: |
-        cd build/src
-        ls -la
-        if [ -f avpn.exe ]; then
-          ldd avpn.exe | grep mingw64 | awk '{print $3}' | xargs -I {} cp {} . || true
-          ls -la avpn.exe
-        else
-          echo "avpn.exe not found, checking build directory structure..."
-          find ../.. -name "avpn.exe" -o -name "avpn"
-          exit 1
-        fi
+        cd build/bin
+        ldd avpn.exe | grep mingw64 | awk '{print $3}' | xargs -I {} cp {} . || true
+        ls -la avpn.exe
     
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-windows-x64
-        path: build/src/avpn.exe
+        path: build/bin/avpn.exe
         retention-days: 7
 
   build-linux:
