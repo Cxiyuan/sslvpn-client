@@ -25,19 +25,30 @@ jobs:
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-cmake
           mingw-w64-x86_64-make
-          mingw-w64-x86_64-openconnect
           mingw-w64-x86_64-gnutls
           mingw-w64-x86_64-spdlog
           mingw-w64-x86_64-qt5-base
           mingw-w64-x86_64-qt5-tools
           mingw-w64-x86_64-qt5-svg
+          mingw-w64-x86_64-pkgconf
+          git
+    
+    - name: Build and Install OpenConnect
+      shell: msys2 {0}
+      run: |
+        git clone https://gitlab.com/openconnect/openconnect.git
+        cd openconnect
+        ./autogen.sh
+        ./configure --prefix=/mingw64 --disable-nls
+        make -j4
+        make install
     
     - name: Configure CMake
       shell: msys2 {0}
       run: |
         mkdir build
         cd build
-        cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+        cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/mingw64
     
     - name: Build
       shell: msys2 {0}
@@ -49,15 +60,15 @@ jobs:
       shell: msys2 {0}
       run: |
         cd build/src
-        cp /mingw64/bin/*.dll . || true
+        # Copy necessary DLLs
+        ldd avpn.exe | grep mingw64 | awk '{print $3}' | xargs -I {} cp {} . || true
         ls -la
     
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-windows-x64
-        path: |
-          build/src/avpn.exe
+        path: build/src/avpn.exe
         retention-days: 7
 
   build-linux:
