@@ -164,6 +164,20 @@ install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION . COMPONENT App
 )
 
+# Install all DLLs from bin directory to package
+if(MINGW)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/bin/
+        DESTINATION .
+        COMPONENT App
+        FILES_MATCHING PATTERN "*.dll"
+    )
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/bin/plugins/
+        DESTINATION plugins
+        COMPONENT App
+        OPTIONAL
+    )
+endif()
+
 # fixup the bundle
 get_target_property(QT_LIBRARY_DIR Qt5::Core LOCATION)
 get_filename_component(QT_LIBRARY_DIR ${QT_LIBRARY_DIR} PATH)
