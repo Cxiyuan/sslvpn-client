@@ -115,7 +115,7 @@ jobs:
         echo "=== Copying other dependencies ==="
         cp -v /mingw64/bin/libgnutls-30.dll . || true
         cp -v /mingw64/bin/libopenconnect-5.dll . || true
-        cp -v /mingw64/bin/libxml2-2.dll . || true
+        cp -v /mingw64/bin/libxml2-*.dll . || true
         cp -v /mingw64/bin/zlib1.dll . || true
         cp -v /mingw64/bin/libp11-kit-0.dll . || true
         cp -v /mingw64/bin/libnettle-*.dll . || true
@@ -151,7 +151,7 @@ jobs:
         echo "=== Final DLL list in bin directory ==="
         ls -la *.dll
         
-        cd ../..
+        cd ..
         make package
     
     - name: Package Windows
