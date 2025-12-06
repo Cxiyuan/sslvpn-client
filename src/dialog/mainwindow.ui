@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>436</width>
+    <height>236</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>436</width>
+    <height>236</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>436</width>
+    <height>236</height>
+   </size>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../avpn.qrc">
+    <normaloff>:/Resources/mono_lock.png</normaloff>:/Resources/mono_lock.png</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="tabWidget_main">
+       <property name="accessibleName">
+        <string/>
+       </property>
+       <attribute name="title">
+        <string>主界面</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,3">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="iconLabel">
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_Profiles" stretch="0,4,0">
+              <item>
+               <widget class="QLabel" name="serverLabel">
+                <property name="text">
+                 <string>服务器:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="serverList"/>
+              </item>
+              <item>
+               <widget class="QToolButton" name="serverListControl">
+                <property name="whatsThis">
+                 <string>编辑</string>
+                </property>
+                <property name="text">
+                 <string>编辑</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../avpn.qrc">
+                  <normaloff>:/images/profiles.png</normaloff>:/images/profiles.png</iconset>
+                </property>
+                <property name="popupMode">
+                 <enum>QToolButton::InstantPopup</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_Buttons" stretch="4,0">
+              <item>
+               <widget class="QPushButton" name="connectionButton">
+                <property name="text">
+                 <string>连接</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../avpn.qrc">
+                  <normaloff>:/images/network-wired.png</normaloff>:/images/network-wired.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="viewLogButton">
+                <property name="text">
+                 <string>查看日志</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../avpn.qrc">
+                  <normaloff>:/images/edit-find.png</normaloff>:/images/edit-find.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabWidget_vpnInfo">
+       <attribute name="title">
+        <string>VPN 信息</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <property name="formAlignment">
+           <set>Qt::AlignJustify|Qt::AlignTop</set>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="ipV4LabelText">
+            <property name="text">
+             <string>IPv4:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="ipV4Label">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="ipV6LabelText">
+            <property name="text">
+             <string>IPv6:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="ipV6Label">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="dnsLabelText">
+            <property name="text">
+             <string>DNS:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="dnsLabel">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="cipherCSTPLabelText">
+            <property name="text">
+             <string>加密算法:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="cipherCSTPLabel">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="cipherDTLSLabelText">
+            <property name="text">
+             <string>DTLS 加密:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="cipherDTLSLabel">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="downloadLabelText">
+            <property name="text">
+             <string>下载:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="uploadLaberText">
+            <property name="text">
+             <string>上传:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="downloadLabel">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="uploadLabel">
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>436</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <widget class="QMenu" name="menuProfiles">
+     <property name="title">
+      <string>配置(&amp;P)</string>
+     </property>
+     <addaction name="actionNewProfile"/>
+     <addaction name="actionNewProfileAdvanced"/>
+     <addaction name="actionEditSelectedProfile"/>
+     <addaction name="actionRemoveSelectedProfile"/>
+    </widget>
+    <addaction name="menuProfiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>查看(&amp;V)</string>
+    </property>
+    <addaction name="actionLogWindow"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>设置(&amp;S)</string>
+    </property>
+    <addaction name="actionMinimizeToTheNotificationArea"/>
+    <addaction name="actionMinimizeTheApplicationInsteadOfClosing"/>
+    <addaction name="separator"/>
+    <addaction name="actionStartMinimized"/>
+    <addaction name="separator"/>
+    <addaction name="actionSingleInstanceMode"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuSettings"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>退出(&amp;Q)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionMinimize">
+   <property name="text">
+    <string>最小化(&amp;M)</string>
+   </property>
+   <property name="toolTip">
+    <string>最小化</string>
+   </property>
+  </action>
+  <action name="actionRestore">
+   <property name="text">
+    <string>恢复(&amp;R)</string>
+   </property>
+   <property name="toolTip">
+    <string>恢复</string>
+   </property>
+  </action>
+  <action name="actionNewProfile">
+   <property name="icon">
+    <iconset resource="../avpn.qrc">
+     <normaloff>:/images/text-new.png</normaloff>:/images/text-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>新建配置(&amp;N)</string>
+   </property>
+   <property name="toolTip">
+    <string>新建快速连接配置</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionEditSelectedProfile">
+   <property name="icon">
+    <iconset resource="../avpn.qrc">
+     <normaloff>:/images/text-editor.png</normaloff>:/images/text-editor.png</iconset>
+   </property>
+   <property name="text">
+    <string>编辑所选配置(&amp;E)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionRemoveSelectedProfile">
+   <property name="icon">
+    <iconset resource="../avpn.qrc">
+     <normaloff>:/images/trashcan.png</normaloff>:/images/trashcan.png</iconset>
+   </property>
+   <property name="text">
+    <string>删除所选配置(&amp;R)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionLogWindow">
+   <property name="icon">
+    <iconset resource="../avpn.qrc">
+     <normaloff>:/images/edit-find.png</normaloff>:/images/edit-find.png</iconset>
+   </property>
+   <property name="text">
+    <string>日志窗口(&amp;L)</string>
+   </property>
+   <property name="toolTip">
+    <string>查看日志窗口</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionMinimizeToTheNotificationArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>最小化到通知区域(&amp;A)</string>
+   </property>
+  </action>
+  <action name="actionMinimizeTheApplicationInsteadOfClosing">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>关闭时最小化(&amp;C)</string>
+   </property>
+  </action>
+  <action name="actionStartMinimized">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>启动时最小化(&amp;M)</string>
+   </property>
+  </action>
+  <action name="actionSingleInstanceMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>单实例模式(&amp;S)</string>
+   </property>
+  </action>
+  <action name="actionNewProfileAdvanced">
+   <property name="icon">
+    <iconset resource="../avpn.qrc">
+     <normaloff>:/images/text-new.png</normaloff>:/images/text-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>新建配置(高级)(&amp;A)</string>
+   </property>
+   <property name="toolTip">
+    <string>新建配置(高级设置)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../avpn.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionMinimize</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showMinimized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>217</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestore</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showNormal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>217</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLogWindow</sender>
+   <signal>triggered()</signal>
+   <receiver>viewLogButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>366</x>
+     <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
