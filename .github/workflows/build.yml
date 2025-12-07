@@ -359,31 +359,68 @@ jobs:
         fi
         
         echo "Found app bundle at: $APP_PATH"
+        echo "=== Initial app size ==="
+        du -sh "$APP_PATH"
         ls -lah "$APP_PATH/Contents/MacOS/"
         
         # Get directory containing the .app
         APP_DIR=$(dirname "$APP_PATH")
         APP_NAME=$(basename "$APP_PATH")
         
-        echo "=== App bundle structure ==="
-        find "$APP_PATH" -type f | head -10
+        echo "=== App bundle initial structure ==="
+        find "$APP_PATH" -type f -exec ls -lh {} \; | head -20
         
+        # Go to app directory
         cd "$APP_DIR"
         
-        # First run macdeployqt to bundle dependencies
-        echo "=== Running macdeployqt to bundle dependencies ==="
-        $(brew --prefix qt@5)/bin/macdeployqt "$APP_NAME" -verbose=3
+        # Run macdeployqt to bundle dependencies
+        echo "=== Running macdeployqt ==="
+        QT_BIN=$(brew --prefix qt@5)/bin
         
-        echo "=== Checking bundled frameworks ==="
-        ls -lh "$APP_NAME/Contents/Frameworks/" || true
+        # Use macdeployqt with explicit paths
+        "$QT_BIN/macdeployqt" "$APP_NAME" \
+          -always-overwrite \
+          -verbose=3 \
+          2>&1 | tee macdeployqt.log
+        
+        echo "=== After macdeployqt - checking size ==="
         du -sh "$APP_NAME"
         
-        # Create DMG
-        echo "=== Creating DMG ==="
-        hdiutil create -volname "aVPN" -srcfolder "$APP_NAME" -ov -format UDZO "${APP_NAME%.app}.dmg"
+        echo "=== Checking bundled frameworks ==="
+        ls -lh "$APP_NAME/Contents/Frameworks/" 2>/dev/null || echo "No Frameworks directory"
+        find "$APP_NAME/Contents/Frameworks" -name "*.framework" 2>/dev/null || true
         
-        ls -lh *.dmg
-        file *.dmg
+        echo "=== Checking bundled plugins ==="
+        ls -lh "$APP_NAME/Contents/PlugIns/" 2>/dev/null || echo "No PlugIns directory"
+        
+        echo "=== Total files in bundle ==="
+        find "$APP_NAME" -type f | wc -l
+        
+        # Create temporary directory for DMG
+        DMG_NAME="${APP_NAME%.app}"
+        mkdir -p dmg_temp
+        cp -R "$APP_NAME" dmg_temp/
+        
+        # Create DMG with better settings
+        echo "=== Creating DMG ==="
+        hdiutil create \
+          -volname "aVPN" \
+          -srcfolder dmg_temp \
+          -ov \
+          -format UDZO \
+          -imagekey zlib-level=9 \
+          "$DMG_NAME.dmg"
+        
+        echo "=== DMG created ==="
+        ls -lh "$DMG_NAME.dmg"
+        file "$DMG_NAME.dmg"
+        
+        # Verify DMG content
+        echo "=== Verifying DMG content ==="
+        hdiutil attach "$DMG_NAME.dmg" -readonly -mountpoint /tmp/avpn_verify
+        ls -lh /tmp/avpn_verify/
+        du -sh /tmp/avpn_verify/*.app
+        hdiutil detach /tmp/avpn_verify
     
     - name: Upload macOS Artifact
       uses: actions/upload-artifact@v4
