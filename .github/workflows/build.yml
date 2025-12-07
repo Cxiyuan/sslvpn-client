@@ -209,20 +209,25 @@ jobs:
         cd build
         make -j$(nproc)
     
-    - name: Check Build Output
+    - name: Create Linux Package
       run: |
-        echo "=== Checking for built executable ==="
-        find build -name "avpn" -type f
-        ls -la build/src/ || true
-        ls -la build/bin/ || true
+        cd build
+        make install DESTDIR=AppDir
+        
+        echo "=== Checking installed files ==="
+        find AppDir -type f
+        
+        # Create tar.gz package
+        cd AppDir
+        tar -czf ../avpn-linux-x64.tar.gz .
+        cd ..
+        ls -lh avpn-linux-x64.tar.gz
     
     - name: Upload Linux Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-linux-x64
-        path: |
-          build/src/avpn
-          build/bin/avpn
+        path: build/avpn-linux-x64.tar.gz
         retention-days: 7
 
   build-macos:
@@ -267,12 +272,16 @@ jobs:
         ls -la build/src/ || true
         ls -la build/bin/ || true
         
-        if [ -d "build/src/avpn.app" ]; then
-          cd build/src
-          $(brew --prefix qt@5)/bin/macdeployqt avpn.app
-        elif [ -d "build/bin/aVPN.app" ]; then
+        if [ -d "build/bin/aVPN.app" ]; then
+          echo "=== Found aVPN.app in bin directory ==="
           cd build/bin
-          $(brew --prefix qt@5)/bin/macdeployqt aVPN.app
+          $(brew --prefix qt@5)/bin/macdeployqt aVPN.app -dmg
+          ls -lh aVPN.dmg
+        elif [ -d "build/src/avpn.app" ]; then
+          echo "=== Found avpn.app in src directory ==="
+          cd build/src
+          $(brew --prefix qt@5)/bin/macdeployqt avpn.app -dmg
+          ls -lh avpn.dmg
         else
           echo "Error: Cannot find .app bundle"
           exit 1
@@ -283,8 +292,8 @@ jobs:
       with:
         name: avpn-macos-x64
         path: |
-          build/src/avpn.app
-          build/bin/aVPN.app
+          build/bin/aVPN.dmg
+          build/src/avpn.dmg
         retention-days: 7
 
   release:
@@ -310,5 +319,5 @@ jobs:
         prerelease: false
         files: |
           avpn-windows-installer/avpn-*.exe
-          avpn-linux-x64/avpn
-          avpn-macos-x64/**/*
+          avpn-linux-x64/avpn-linux-x64.tar.gz
+          avpn-macos-x64/*.dmg
