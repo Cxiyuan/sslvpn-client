@@ -25,7 +25,7 @@ FileLogger::FileLogger(QObject* parent, const QString& logPath, const size_t log
 #endif
             logSize,
             logCount);
-        spd::set_pattern("%v");
+        m_logger->set_pattern("%v");
     } catch (const spd::spdlog_ex& ex) {
         QMessageBox::critical(nullptr,
             QString("Log file init failed"),
