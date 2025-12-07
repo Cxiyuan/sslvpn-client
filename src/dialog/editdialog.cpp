@@ -203,7 +203,7 @@ void EditDialog::on_buttonBox_accepted()
     if (ui->userKeyEdit->text().isEmpty() == false) {
         if (ss->set_client_key(ui->userKeyEdit->text()) != 0) {
             QMessageBox mbox;
-            mbox.setText(tr("Cannot import user key."));
+            mbox.setText(tr("无法导入用户密钥。"));
             if (ss->m_last_err.isEmpty() == false)
                 mbox.setInformativeText(ss->m_last_err);
             mbox.exec();
@@ -227,7 +227,7 @@ void EditDialog::on_buttonBox_accepted()
     if (ss->client_is_complete() != true) {
         QMessageBox::information(this,
             qApp->applicationName(),
-            tr("There is a client certificate specified but no key!"));
+            tr("已指定客户端证书但没有密钥！"));
         return;
     }
     ss->set_label(ui->nameEdit->text());

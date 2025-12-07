@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget* parent, const QString profileName)
     s1_noProfiles->assignProperty(ui->actionEditSelectedProfile, "enabled", false);
     s1_noProfiles->assignProperty(ui->actionRemoveSelectedProfile, "enabled", false);
 
-    s1_noProfiles->assignProperty(m_trayIconMenuConnections, "title", tr("(no servers to connect)"));
+    s1_noProfiles->assignProperty(m_trayIconMenuConnections, "title", tr("(没有可连接的服务器)"));
     s1_noProfiles->assignProperty(m_trayIconMenuConnections, "enabled", false);
     s1_noProfiles->assignProperty(m_disconnectAction, "enabled", false);
     machine->addState(s1_noProfiles);
@@ -925,6 +925,5 @@ void MainWindow::on_actionRemoveSelectedProfile_triggered()
         reload_settings(); // LCA: remove this feature...
     }
 }
-
 
 

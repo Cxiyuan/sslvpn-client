@@ -66,7 +66,7 @@ bool relaunch_as_root()
 
     /* Get the path of the current program */
     if (_NSGetExecutablePath(appPath, &size) != 0) {
-        msgBox.setText(QObject::tr("Could not get program path to elevate privileges."));
+        msgBox.setText(QObject::tr("无法获取程序路径以提升权限。"));
         return false;
     }
 
@@ -74,7 +74,7 @@ bool relaunch_as_root()
         kAuthorizationFlagDefaults, &authRef);
 
     if (status != errAuthorizationSuccess) {
-        msgBox.setText(QObject::tr("Failed to create authorization reference."));
+        msgBox.setText(QObject::tr("创建授权引用失败。"));
         return false;
     }
     status = AuthorizationExecuteWithPrivileges(authRef, appPath,
@@ -94,17 +94,17 @@ int pin_callback(void* userdata, int attempt, const char* token_url,
     const char* token_label, unsigned flags, char* pin,
     size_t pin_max)
 {
-    QString type = QObject::tr("user");
+    QString type = QObject::tr("用户");
     if (flags & GNUTLS_PIN_SO) {
-        type = QObject::tr("security officer");
+        type = QObject::tr("安全管理员");
     }
 
-    QString outtext = QObject::tr("Please enter the ") + type + QObject::tr(" PIN for ") + QLatin1String(token_label) + ".";
+    QString outtext = QObject::tr("请输入 ") + type + QObject::tr(" 的 PIN 码用于 ") + QLatin1String(token_label) + ".";
     if (flags & GNUTLS_PKCS11_PIN_FINAL_TRY) {
-        outtext += QObject::tr(" This is the FINAL try!");
+        outtext += QObject::tr(" 这是最后一次尝试！");
     }
     if (flags & GNUTLS_PKCS11_PIN_COUNT_LOW) {
-        outtext += QObject::tr(" Only few tries before token lock!");
+        outtext += QObject::tr(" 仅剩少数次尝试机会，之后令牌将被锁定！");
     }
 
     MainWindow* w = (MainWindow*)userdata;
@@ -164,8 +164,8 @@ int main(int argc, char* argv[])
         }
 
         QMessageBox msgBox;
-        msgBox.setText(QObject::tr("This program requires root privileges to fully function."));
-        msgBox.setInformativeText(QObject::tr("VPN connection establishment would fail."));
+        msgBox.setText(QObject::tr("此程序需要 root 权限才能正常运行。"));
+        msgBox.setInformativeText(QObject::tr("VPN 连接建立将会失败。"));
         msgBox.exec();
         return -1;
     }
@@ -182,14 +182,13 @@ int main(int argc, char* argv[])
 
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        QObject::tr("OpenConnect is a VPN client, that utilizes TLS and DTLS "
-                    "for secure session establishment, and is compatible "
-                    "with the CISCO AnyConnect SSL VPN protocol."));
+        QObject::tr("OpenConnect 是一个 VPN 客户端，利用 TLS 和 DTLS "
+                    "建立安全会话，兼容 CISCO AnyConnect SSL VPN 协议。"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption({ { "s", "server" },
-        QObject::tr("auto-connect to existing profile <name>"),
-        QObject::tr("name")
+        QObject::tr("自动连接到现有配置 <名称>"),
+        QObject::tr("名称")
 
     });
 

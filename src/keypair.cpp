@@ -86,8 +86,8 @@ static int load_pkcs12_file(QWidget* w,
 
     //    bool ok = false;
     pass = QInputDialog::getText(w,
-        QLatin1String("This file requires a password"),
-        QLatin1String("Please enter your password"),
+        QLatin1String("此文件需要密码"),
+        QLatin1String("请输入您的密码"),
         QLineEdit::Password,
         QString(),
         &ok);
