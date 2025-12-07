@@ -262,14 +262,29 @@ jobs:
     
     - name: Create App Bundle
       run: |
-        cd build/src
-        $(brew --prefix qt@5)/bin/macdeployqt avpn.app
+        echo "=== Checking build output ==="
+        find build -name "*.app" -o -name "avpn" -o -name "aVPN" 2>/dev/null || true
+        ls -la build/src/ || true
+        ls -la build/bin/ || true
+        
+        if [ -d "build/src/avpn.app" ]; then
+          cd build/src
+          $(brew --prefix qt@5)/bin/macdeployqt avpn.app
+        elif [ -d "build/bin/aVPN.app" ]; then
+          cd build/bin
+          $(brew --prefix qt@5)/bin/macdeployqt aVPN.app
+        else
+          echo "Error: Cannot find .app bundle"
+          exit 1
+        fi
     
     - name: Upload macOS Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-macos-x64
-        path: build/src/avpn.app
+        path: |
+          build/src/avpn.app
+          build/bin/aVPN.app
         retention-days: 7
 
   release:
