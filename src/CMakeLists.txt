@@ -61,15 +61,25 @@ if(MINGW)
     )
 endif()
 if(APPLE)
-    list(APPEND ${PROJECT_NAME}_RESOURCES
-        Resources/mono_lock.icns
-        ${OPENCONNECT_VPNC_SCRIPT}
-    )
-    set_source_files_properties(
-        Resources/mono_lock.icns
-        ${OPENCONNECT_VPNC_SCRIPT}
-            PROPERTIES MACOSX_PACKAGE_LOCATION Resources
-    )
+    if(EXISTS ${OPENCONNECT_VPNC_SCRIPT})
+        list(APPEND ${PROJECT_NAME}_RESOURCES
+            Resources/mono_lock.icns
+            ${OPENCONNECT_VPNC_SCRIPT}
+        )
+        set_source_files_properties(
+            Resources/mono_lock.icns
+            ${OPENCONNECT_VPNC_SCRIPT}
+                PROPERTIES MACOSX_PACKAGE_LOCATION Resources
+        )
+    else()
+        list(APPEND ${PROJECT_NAME}_RESOURCES
+            Resources/mono_lock.icns
+        )
+        set_source_files_properties(
+            Resources/mono_lock.icns
+                PROPERTIES MACOSX_PACKAGE_LOCATION Resources
+        )
+    endif()
 endif()
 
 add_executable(${PROJECT_NAME}
