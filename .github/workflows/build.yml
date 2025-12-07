@@ -246,14 +246,14 @@ jobs:
         cp $AVPN_EXE $APPDIR/usr/bin/avpn
         
         # Create desktop file
-        cat > $APPDIR/usr/share/applications/avpn.desktop << EOF
-[Desktop Entry]
-Type=Application
-Name=aVPN
-Exec=avpn
-Icon=avpn
-Categories=Network;
-EOF
+        cat > $APPDIR/usr/share/applications/avpn.desktop << 'DESKTOPEOF'
+        [Desktop Entry]
+        Type=Application
+        Name=aVPN
+        Exec=avpn
+        Icon=avpn
+        Categories=Network;
+        DESKTOPEOF
         
         # Create icon (placeholder)
         touch $APPDIR/usr/share/icons/hicolor/256x256/apps/avpn.png
