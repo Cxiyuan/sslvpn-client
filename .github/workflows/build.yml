@@ -209,11 +209,20 @@ jobs:
         cd build
         make -j$(nproc)
     
+    - name: Check Build Output
+      run: |
+        echo "=== Checking for built executable ==="
+        find build -name "avpn" -type f
+        ls -la build/src/ || true
+        ls -la build/bin/ || true
+    
     - name: Upload Linux Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-linux-x64
-        path: build/src/avpn
+        path: |
+          build/src/avpn
+          build/bin/avpn
         retention-days: 7
 
   build-macos:
