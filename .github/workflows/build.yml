@@ -314,7 +314,7 @@ jobs:
     
     - name: Install Dependencies
       run: |
-        brew install qt@5 openconnect gnutls spdlog cmake pkg-config
+        brew install qt@5 openconnect gnutls cmake pkg-config fmt
     
     - name: Configure CMake
       run: |
