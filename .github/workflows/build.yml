@@ -461,12 +461,25 @@ jobs:
           EXEC_PATH="$APP_NAME/Contents/MacOS/aVPN"
           if [ -f "$EXEC_PATH" ]; then
             echo "Fixing main executable: $EXEC_PATH"
+            
+            # Add @rpath search paths
+            echo "  Adding @rpath entries..."
+            install_name_tool -add_rpath "@executable_path/../Frameworks" "$EXEC_PATH" 2>/dev/null || true
+            install_name_tool -add_rpath "@loader_path/../Frameworks" "$EXEC_PATH" 2>/dev/null || true
+            
+            # Fix dependencies
             otool -L "$EXEC_PATH" | grep -E '/usr/local|/opt/homebrew' | awk '{print $1}' | while read dep; do
               libname=$(basename "$dep")
               echo "  Fixing dependency: $dep -> @rpath/$libname"
               install_name_tool -change "$dep" "@rpath/$libname" "$EXEC_PATH" 2>/dev/null || true
             done
           fi
+          
+          # Also add @rpath to all dylibs so they can find each other
+          find "$FRAMEWORKS_DIR" -name "*.dylib" | while read dylib; do
+            install_name_tool -add_rpath "@loader_path" "$dylib" 2>/dev/null || true
+            install_name_tool -add_rpath "@loader_path/." "$dylib" 2>/dev/null || true
+          done
           
           echo "=== Verification: Checking for remaining absolute paths ==="
           find "$FRAMEWORKS_DIR" -name "*.dylib" -exec otool -L {} \; | grep -E '/usr/local|/opt/homebrew' || echo "No hardcoded paths found - Good!"
