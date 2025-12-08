@@ -113,8 +113,8 @@ MainWindow::MainWindow(QWidget* parent, const QString profileName)
             this, &MainWindow::iconActivated);
 
         QFileSelector selector;
-        QIcon icon(selector.select(QStringLiteral(":/images/network-disconnected.png")));
-        icon.setIsMask(true);
+        QIcon icon(selector.select(QStringLiteral(":/images/favicon.ico")));
+        icon.setIsMask(false);
         m_trayIcon->setIcon(icon);
         m_trayIcon->show();
     } else {
@@ -925,5 +925,4 @@ void MainWindow::on_actionRemoveSelectedProfile_triggered()
         reload_settings(); // LCA: remove this feature...
     }
 }
-
 

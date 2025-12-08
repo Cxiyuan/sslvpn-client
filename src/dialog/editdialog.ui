@@ -114,7 +114,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="caCertificateLabel">
        <property name="text">
-        <string>CA Certificate</string>
+        <string>CA证书</string>
        </property>
       </widget>
      </item>
@@ -130,10 +130,10 @@
        <item>
         <widget class="QLineEdit" name="caCertEdit">
          <property name="toolTip">
-          <string>Specify the CA certificate, if any; by default the system CAs will be used</string>
+          <string>指定CA证书（如有）；默认使用系统CA证书</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If not set, the system's trusted certificate storage will be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如未设置，将使用系统受信证书存储。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -143,7 +143,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Clear</string>
+          <string>清除</string>
          </property>
          <property name="icon">
           <iconset resource="../avpn.qrc">
@@ -156,7 +156,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="serverCertificateLabel">
        <property name="text">
-        <string>Server Certificate</string>
+        <string>服务器证书</string>
        </property>
       </widget>
      </item>
@@ -181,7 +181,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Clear</string>
+          <string>清除</string>
          </property>
          <property name="icon">
           <iconset resource="../avpn.qrc">
@@ -194,7 +194,7 @@
      <item row="8" column="0">
       <widget class="QLabel" name="otpTokenLabel">
        <property name="text">
-        <string>OTP Token</string>
+        <string>OTP令牌</string>
        </property>
       </widget>
      </item>
@@ -234,7 +234,7 @@
        <item>
         <widget class="QLineEdit" name="tokenEdit">
          <property name="toolTip">
-          <string>This is the token code; should be a hex value (starting with 0x), or a value starting with 'base32:'</string>
+          <string>令牌代码；应为十六进制值（以0x开头），或以'base32:'开头的值</string>
          </property>
         </widget>
        </item>
@@ -287,7 +287,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="userCertificateLabel">
            <property name="text">
-            <string>User Certificate</string>
+            <string>用户证书</string>
            </property>
           </widget>
          </item>
@@ -303,7 +303,7 @@
            <item>
             <widget class="QLineEdit" name="userCertEdit">
              <property name="toolTip">
-              <string>Specify your certificate file, if any</string>
+              <string>指定您的证书文件（如有）</string>
              </property>
             </widget>
            </item>
@@ -313,7 +313,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Clear</string>
+              <string>清除</string>
              </property>
              <property name="icon">
               <iconset resource="../avpn.qrc">
@@ -342,7 +342,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>User Key</string>
+            <string>用户密钥</string>
            </property>
           </widget>
          </item>
@@ -364,7 +364,7 @@
               <bool>true</bool>
              </property>
              <property name="toolTip">
-              <string>Specify your key file if any; in case of a PKCS #12 file, you only need to set the certificate</string>
+              <string>指定您的密钥文件（如有）；对于PKCS #12文件，只需设置证书</string>
              </property>
             </widget>
            </item>
@@ -374,7 +374,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Clear</string>
+              <string>清除</string>
              </property>
              <property name="icon">
               <iconset resource="../avpn.qrc">
@@ -390,7 +390,7 @@
      </widget>
      <widget class="QWidget" name="systemStoreTab">
       <attribute name="title">
-       <string>System Store</string>
+       <string>系统存储</string>
       </attribute>
       <widget class="QListWidget" name="loadWinCertList">
        <property name="geometry">
@@ -418,17 +418,17 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string extracomment="Select that certificate"/>
+           <string extracomment="Select that certificate">选择该证书</string>
           </property>
           <property name="text">
-           <string>Select</string>
+           <string>选择</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="resetWinCertSelection">
           <property name="text">
-           <string>Reset</string>
+           <string>重置</string>
           </property>
          </widget>
         </item>
@@ -448,18 +448,18 @@
         <item row="0" column="0">
          <widget class="QLabel" name="reconnectTimeoutLabel">
           <property name="text">
-           <string>Reconnect timeout</string>
+           <string>重连超时</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="reconnectTimeoutSpinBox">
           <property name="toolTip">
-           <string>Keep reconnect attempts until so much seconds are elapsed.
-The default timeout is 300 seconds, which means that openconnect can recover VPN connection after a temporary network down time of 300 seconds.</string>
+           <string>持续重连尝试，直到经过指定秒数。
+默认超时为300秒，意味着openconnect可在临时网络中断300秒后恢复VPN连接。</string>
           </property>
           <property name="suffix">
-           <string>s</string>
+           <string>秒</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -475,14 +475,14 @@ The default timeout is 300 seconds, which means that openconnect can recover VPN
         <item row="1" column="0">
          <widget class="QLabel" name="dtlsAttemptPeriodLabel">
           <property name="text">
-           <string>DTLS attempt period</string>
+           <string>DTLS尝试周期</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="dtlsAttemptPeriodSpinBox">
           <property name="suffix">
-           <string>s</string>
+           <string>秒</string>
           </property>
           <property name="maximum">
            <number>1000</number>
@@ -499,10 +499,10 @@ The default timeout is 300 seconds, which means that openconnect can recover VPN
         <item row="0" column="0">
          <widget class="QCheckBox" name="minimizeBox">
           <property name="toolTip">
-           <string>Enable this to automatically minimize after connection</string>
+           <string>启用此选项以在连接后自动最小化</string>
           </property>
           <property name="text">
-           <string>Minimize on Connect</string>
+           <string>连接时最小化</string>
           </property>
          </widget>
         </item>
@@ -519,17 +519,17 @@ The default timeout is 300 seconds, which means that openconnect can recover VPN
         <item row="1" column="0">
          <widget class="QCheckBox" name="disableUdpBox">
           <property name="text">
-           <string>Disable UDP</string>
+           <string>禁用UDP</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QCheckBox" name="useProxyBox">
           <property name="toolTip">
-           <string>Enable this to use the system's default proxy settings for this server</string>
+           <string>启用此选项以对该服务器使用系统默认代理设置</string>
           </property>
           <property name="text">
-           <string>Use Proxy</string>
+           <string>使用代理</string>
           </property>
          </widget>
         </item>
