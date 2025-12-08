@@ -386,6 +386,55 @@ jobs:
         echo "=== After macdeployqt - checking size ==="
         du -sh "$APP_NAME"
         
+        # Fix library paths to use @rpath instead of hardcoded Homebrew paths
+        echo "=== Fixing dynamic library paths ==="
+        FRAMEWORKS_DIR="$APP_NAME/Contents/Frameworks"
+        
+        if [ -d "$FRAMEWORKS_DIR" ]; then
+          echo "Found Frameworks directory, fixing library paths..."
+          
+          # Fix all dylib files in Frameworks
+          find "$FRAMEWORKS_DIR" -name "*.dylib" | while read dylib; do
+            echo "Processing: $dylib"
+            
+            # Get all dependencies with absolute paths
+            otool -L "$dylib" | grep -E '/usr/local|/opt/homebrew' | awk '{print $1}' | while read dep; do
+              libname=$(basename "$dep")
+              echo "  Fixing dependency: $dep -> @rpath/$libname"
+              install_name_tool -change "$dep" "@rpath/$libname" "$dylib" 2>/dev/null || true
+            done
+            
+            # Also fix the dylib's own install name if needed
+            install_name=$(otool -D "$dylib" | tail -1)
+            if [[ "$install_name" == /usr/local/* ]] || [[ "$install_name" == /opt/homebrew/* ]]; then
+              libname=$(basename "$dylib")
+              echo "  Fixing install name: $install_name -> @rpath/$libname"
+              install_name_tool -id "@rpath/$libname" "$dylib" 2>/dev/null || true
+            fi
+          done
+          
+          # Fix the main executable
+          EXEC_PATH="$APP_NAME/Contents/MacOS/aVPN"
+          if [ -f "$EXEC_PATH" ]; then
+            echo "Fixing main executable: $EXEC_PATH"
+            otool -L "$EXEC_PATH" | grep -E '/usr/local|/opt/homebrew' | awk '{print $1}' | while read dep; do
+              libname=$(basename "$dep")
+              echo "  Fixing dependency: $dep -> @rpath/$libname"
+              install_name_tool -change "$dep" "@rpath/$libname" "$EXEC_PATH" 2>/dev/null || true
+            done
+          fi
+          
+          echo "=== Verification: Checking for remaining absolute paths ==="
+          find "$FRAMEWORKS_DIR" -name "*.dylib" -exec otool -L {} \; | grep -E '/usr/local|/opt/homebrew' || echo "No hardcoded paths found - Good!"
+          
+          if [ -f "$EXEC_PATH" ]; then
+            echo "Main executable dependencies:"
+            otool -L "$EXEC_PATH" | grep -E '/usr/local|/opt/homebrew' || echo "No hardcoded paths in executable - Good!"
+          fi
+        else
+          echo "Warning: Frameworks directory not found"
+        fi
+        
         echo "=== Checking bundled frameworks ==="
         ls -lh "$APP_NAME/Contents/Frameworks/" 2>/dev/null || echo "No Frameworks directory"
         find "$APP_NAME/Contents/Frameworks" -name "*.framework" 2>/dev/null || true
