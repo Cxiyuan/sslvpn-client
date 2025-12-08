@@ -360,16 +360,30 @@ jobs:
       run: |
         brew install qt@5 openconnect gnutls cmake pkg-config fmt
     
+    - name: Download vpnc-script
+      run: |
+        echo "=== Downloading vpnc-script ==="
+        curl -L -o src/Resources/vpnc-script https://gitlab.com/openconnect/vpnc-scripts/-/raw/master/vpnc-script
+        chmod +x src/Resources/vpnc-script
+        ls -lh src/Resources/vpnc-script
+        head -5 src/Resources/vpnc-script
+    
     - name: Configure CMake
       run: |
         export Qt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5
         export PKG_CONFIG_PATH=$(brew --prefix openconnect)/lib/pkgconfig:$(brew --prefix gnutls)/lib/pkgconfig
+        
+        # Find vpnc-script location
+        VPNC_SCRIPT_PATH="$(pwd)/src/Resources/vpnc-script"
+        echo "VPNC_SCRIPT_PATH=$VPNC_SCRIPT_PATH"
+        
         mkdir build
         cd build
         cmake .. \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_PREFIX_PATH=$(brew --prefix qt@5) \
-          -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15 \
+          -DOPENCONNECT_VPNC_SCRIPT="$VPNC_SCRIPT_PATH"
     
     - name: Build
       run: |
