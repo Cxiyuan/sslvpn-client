@@ -24,10 +24,26 @@ cpack -G WIX
 ## MSI 安装包特性
 
 - **默认安装路径**: C:\Program Files\aVPN
-- **简化安装界面**: 仅显示安装进度条，无需用户交互
-- **自动创建桌面快捷方式**: 安装时自动创建桌面图标
+- **显示许可协议和安装路径选择**
 - **开始菜单快捷方式**: 在开始菜单创建 aVPN 程序组
-- **可取消安装**: 进度窗口包含最小化、关闭、取消按钮
+- **标准 Windows Installer 支持**: 支持升级、修复、卸载等标准功能
+- **企业部署友好**: 支持 GPO 和静默安装
+
+## 创建桌面快捷方式
+
+安装完成后，如需创建桌面快捷方式，请运行安装目录下的 `create_desktop_shortcut.bat` 脚本：
+
+```cmd
+cd "C:\Program Files\aVPN"
+create_desktop_shortcut.bat
+```
+
+或在安装完成时自动运行：
+
+```cmd
+msiexec /i aVPN-1.5.3-win64.msi
+cd "C:\Program Files\aVPN" && create_desktop_shortcut.bat
+```
 
 ## 安装方式
 

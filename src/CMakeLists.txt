@@ -210,6 +210,11 @@ if(MINGW)
         DESTINATION .
         COMPONENT App
     )
+    install(FILES
+        ${CMAKE_SOURCE_DIR}/create_desktop_shortcut.bat
+        DESTINATION .
+        COMPONENT App
+    )
 
     set(additionalLib ${_qwindows_dll})
     if(NOT Qt5Core_VERSION STRLESS "5.10")
