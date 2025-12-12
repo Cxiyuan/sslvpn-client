@@ -24,6 +24,9 @@ if(WIN32 AND MINGW)
         set(CPACK_GENERATOR "NSIS")
     endif()
 
+    set(CPACK_NSIS_INSTALL_ROOT "C:")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "Program Files\\\\aVPN")
+    
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
     set(CPACK_NSIS_HELP_LINK "https:\\\\\\\\github.com\\\\openconnect\\\\openconnect-gui\\\\wiki\\\\FAQ")
@@ -38,75 +41,22 @@ if(WIN32 AND MINGW)
     set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_SOURCE_DIR}\\\\nsis\\\\images\\\\header-openconnect.bmp)
     set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\nsis\\\\images\\\\install-openconnect.bmp)
     set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_CURRENT_SOURCE_DIR}\\\\nsis\\\\images\\\\install-openconnect.bmp)
+    
+    set(CPACK_MONOLITHIC_INSTALL ON)
+    
+    set(CPACK_NSIS_INSTALLER_MUI_FINISHPAGE_RUN OFF)
 
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
-    set(CPACK_NSIS_MUI_FINISHPAGE_RUN "${PROJECT_NAME}.exe")
     
     set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
         SetOutPath '$INSTDIR'
         CreateShortCut '$DESKTOP\\\\aVPN.lnk' '$INSTDIR\\\\avpn.exe'
+        ExecWait '\\\"$INSTDIR\\\\Drivers\\\\tap-windows.exe\\\" /S /norestart'
     ")
     
     set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
         Delete '$DESKTOP\\\\aVPN.lnk'
     ")
-
-    set(CPACK_NSIS_MENU_LINKS
-        "https://openconnect.github.io/openconnect-gui/" "Homepage"
-        "https://github.com/openconnect/openconnect-gui/issues" "Issues"
-        "https://github.com/openconnect/openconnect-gui/wiki/FAQ" "FAQ"
-    )
-
-    # NSIS'es list of all components
-    set(CPACK_COMPONENTS_ALL App App_Console vpnc_script TAP_drivers)
-
-    set(CPACK_COMPONENT_APP_REQUIRED on)
-    set(CPACK_COMPONENT_APP_DISPLAY_NAME "GUI")
-    set(CPACK_COMPONENT_APP_DESCRIPTION "${PRODUCT_NAME_LONG} GUI")
-    set(CPACK_COMPONENT_APP_GROUP "Application")
-    set(CPACK_COMPONENT_APP_INSTALL_TYPES Full AppOnly Standard)
-
-    set(CPACK_COMPONENT_VPNC_SCRIPT_REQUIRED on)
-    set(CPACK_COMPONENT_VPNC_SCRIPT_DISPLAY_NAME "vpnc-script.js")
-    set(CPACK_COMPONENT_VPNC_SCRIPT_DESCRIPTION "vpnc helper script to set the routing and name service up")
-    set(CPACK_COMPONENT_VPNC_SCRIPT_GROUP "Application")
-    set(CPACK_COMPONENT_VPNC_SCRIPT_INSTALL_TYPES Full AppOnly Standard)
-
-    set(CPACK_COMPONENT_TAP_DRIVERS_REQUIRED off)
-    set(CPACK_COMPONENT_TAP_DRIVERS_DISPLAY_NAME "TAP driver")
-    set(CPACK_COMPONENT_TAP_DRIVERS_DESCRIPTION "NDIS 6 driver for Windows (in case you're installing on Windows XP, \
-    disable this option and install NDIS 5 drivers manually from https://openvpn.net)")
-    set(CPACK_COMPONENT_TAP_DRIVERS_GROUP "Drivers")
-    set(CPACK_COMPONENT_TAP_DRIVERS_INSTALL_TYPES Full Standard)
-
-    set(CPACK_COMPONENT_VCREDIST_LIBS_REQUIRED off)
-    set(CPACK_COMPONENT_VCREDIST_LIBS_DISPLAY_NAME "vcredist")
-    set(CPACK_COMPONENT_VCREDIST_LIBS_DESCRIPTION "Visual C++ Redistributable Package for Visual Studio 2015")
-    set(CPACK_COMPONENT_VCREDIST_LIBS_GROUP "Drivers")
-    set(CPACK_COMPONENT_VCREDIST_LIBS_INSTALL_TYPES Full Standard)
-
-    set(CPACK_COMPONENT_APP_CONSOLE_DISABLED on)
-    set(CPACK_COMPONENT_APP_CONSOLE_REQUIRED off)
-    set(CPACK_COMPONENT_APP_CONSOLE_DISPLAY_NAME "console")
-    set(CPACK_COMPONENT_APP_CONSOLE_DESCRIPTION "${PRODUCT_NAME_LONG} (console)")
-    set(CPACK_COMPONENT_APP_CONSOLE_GROUP "Application")
-    set(CPACK_COMPONENT_APP_CONSOLE_INSTALL_TYPES Full)
-
-    # custom install command to populate NDIS drivers
-    list(APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS " ExecWait '\\\"$INSTDIR\\\\Drivers\\\\tap-windows.exe\\\" /S /norestart'")
-    string(REPLACE ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}")
-
-    # NSIS'es Runtime-group
-    set(CPACK_COMPONENT_GROUP_APPLICATION_DESCRIPTION "Main application and network configuration script")
-    set(CPACK_COMPONENT_GROUP_APPLICATION_EXPANDED on)
-    set(CPACK_COMPONENT_GROUP_DRIVERS_DESCRIPTION "Drivers")
-    set(CPACK_COMPONENT_GROUP_DRIVERS_EXPANDED on)
-
-    # NSIS'es install types lists
-    set(CPACK_ALL_INSTALL_TYPES Full)
-    set(CPACK_INSTALL_TYPE_FULL_DISPLAY_NAME "Full installation")
-    set(CPACK_INSTALL_TYPE_APPONLY_DISPLAY_NAME "Application only")
-    set(CPACK_INSTALL_TYPE_STANDARD_DISPLAY_NAME "Standard installation")
 
     # source code packaging
     #set(CPACK_SOURCE_PACKAGE_FILE_NAME )
