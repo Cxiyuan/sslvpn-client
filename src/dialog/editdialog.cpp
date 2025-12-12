@@ -267,8 +267,9 @@ void EditDialog::on_userCertButton_clicked()
         tr("打开证书"), "",
         tr("证书文件 (*.crt *.pem *.der *.p12)"));
 
-    // FIXME: check empty result
-    ui->userCertEdit->setText(filename);
+    if (!filename.isEmpty()) {
+        ui->userCertEdit->setText(filename);
+    }
 }
 
 void EditDialog::on_userKeyButton_clicked()
@@ -277,8 +278,9 @@ void EditDialog::on_userKeyButton_clicked()
         tr("打开私钥"), "",
         tr("私钥文件 (*.key *.pem *.der *.p8 *.p12)"));
 
-    // FIXME: check empty result
-    ui->userKeyEdit->setText(filename);
+    if (!filename.isEmpty()) {
+        ui->userKeyEdit->setText(filename);
+    }
 }
 
 void EditDialog::on_caCertButton_clicked()
@@ -287,8 +289,9 @@ void EditDialog::on_caCertButton_clicked()
         tr("打开证书"), "",
         tr("证书文件 (*.crt *.pem *.der)"));
 
-    // FIXME: check empty result
-    ui->caCertEdit->setText(filename);
+    if (!filename.isEmpty()) {
+        ui->caCertEdit->setText(filename);
+    }
 }
 
 void EditDialog::on_userCertClear_clicked()

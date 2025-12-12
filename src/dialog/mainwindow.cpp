@@ -619,7 +619,8 @@ void MainWindow::on_disconnectClicked()
 void MainWindow::on_connectClicked()
 {
     VpnInfo* vpninfo = nullptr;
-    StoredServer* ss = new StoredServer();
+    std::unique_ptr<StoredServer> ss_holder(new StoredServer());
+    StoredServer* ss = ss_holder.get();
     QFuture<void> future;
     QString name, url;
     QList<QNetworkProxy> proxies;
@@ -652,9 +653,9 @@ void MainWindow::on_connectClicked()
     turl.setUrl("https://" + ss->get_servername());
     query.setUrl(turl);
 
-    /* ss is now deallocated by vpninfo */
     try {
         vpninfo = new VpnInfo(QStringLiteral("Open AnyConnect VPN Agent"), ss, this);
+        ss_holder.release();
     } catch (std::exception& ex) {
         QMessageBox::information(this,
             qApp->applicationName(),

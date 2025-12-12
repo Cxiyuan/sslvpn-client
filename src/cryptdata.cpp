@@ -85,12 +85,9 @@ QByteArray CryptData::encode(QString& txt, QString password)
         return res;
     }
 
-    QByteArray data;
-    data.setRawData((const char*)DataOut.pbData, DataOut.cbData);
-
     res.clear();
     res.append("xxxx");
-    res.append(data.toBase64());
+    res.append(QByteArray((const char*)DataOut.pbData, DataOut.cbData).toBase64());
 
     LocalFree(DataOut.pbData);
     return res;
@@ -108,7 +105,7 @@ bool CryptData::decode(QString& txt, QByteArray _enc, QString& res)
     DATA_BLOB DataIn;
     QByteArray enc{ QByteArray::fromBase64(_enc.mid(4)) };
     DataIn.pbData = (BYTE*)enc.data();
-    DataIn.cbData = enc.size() + 1;
+    DataIn.cbData = enc.size();
 
     DATA_BLOB Entropy;
     QByteArray txtArray{ txt.toUtf8() };
@@ -119,6 +116,7 @@ bool CryptData::decode(QString& txt, QByteArray _enc, QString& res)
 
     BOOL r = pCryptUnprotectData(&DataIn, NULL, &Entropy, NULL, NULL, 0, &DataOut);
     if (r == false) {
+        res.clear();
         return false;
     }
 

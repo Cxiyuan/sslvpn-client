@@ -27,6 +27,8 @@
 #include "FileLogger.h"
 #include "logger.h"
 
+#include <cstring>
+
 extern "C" {
 #include <gnutls/pkcs11.h>
 #include <openconnect.h>
@@ -117,7 +119,10 @@ int pin_callback(void* userdata, int attempt, const char* token_url,
         return -1;
     }
 
-    snprintf(pin, pin_max, "%s", text.toLatin1().data());
+    QByteArray textData = text.toLatin1();
+    size_t len = qMin(static_cast<size_t>(textData.size()), pin_max - 1);
+    memcpy(pin, textData.data(), len);
+    pin[len] = '\0';
     return 0;
 }
 

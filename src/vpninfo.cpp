@@ -55,17 +55,20 @@ static void progress_vfn(void* privdata, int level, const char* fmt, ...)
     size_t len;
     va_list args;
 
-    /* don't spam */
     if (level == PRG_TRACE)
         return;
 
     buf[0] = 0;
     va_start(args, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, args);
+    int ret = vsnprintf(buf, sizeof(buf), fmt, args);
     va_end(args);
 
+    if (ret < 0 || static_cast<size_t>(ret) >= sizeof(buf)) {
+        buf[sizeof(buf) - 1] = 0;
+    }
+
     len = strlen(buf);
-    if (buf[len - 1] == '\n')
+    if (len > 0 && buf[len - 1] == '\n')
         buf[len - 1] = 0;
     Logger::instance().addMessage(buf);
 }
@@ -303,14 +306,13 @@ static void setup_tun_vfn(void* privdata)
 {
     VpnInfo* vpn = static_cast<VpnInfo*>(privdata);
 
-    QByteArray vpncScriptFullPath;
-    vpncScriptFullPath.append(QCoreApplication::applicationDirPath());
-    vpncScriptFullPath.append(QDir::separator());
-    vpncScriptFullPath.append(DEFAULT_VPNC_SCRIPT);
-    int ret = openconnect_setup_tun_device(vpn->vpninfo, vpncScriptFullPath.constData(), NULL);
+    QString vpncScriptFullPath = QCoreApplication::applicationDirPath() 
+        % QDir::separator() 
+        % QLatin1String(DEFAULT_VPNC_SCRIPT);
+    int ret = openconnect_setup_tun_device(vpn->vpninfo, vpncScriptFullPath.toLatin1().constData(), NULL);
     if (ret != 0) {
         vpn->last_err = QObject::tr("Error setting up the TUN device");
-        //FIXME: ???        return ret;
+        Logger::instance().addMessage(QObject::tr("TUN device setup failed: ") % QString::number(ret));
     }
 
     vpn->logVpncScriptOutput();
@@ -356,7 +358,7 @@ VpnInfo::VpnInfo(QString name, StoredServer* ss, MainWindow* m)
             ss->get_token_str().toLatin1().data());
     }
 
-    openconnect_set_protocol(vpninfo, ss->get_protocol_name());
+    openconnect_set_protocol(vpninfo, ss->get_protocol_name().toLatin1().data());
 
     openconnect_set_setup_tun_handler(vpninfo, setup_tun_vfn);
 }
