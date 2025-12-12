@@ -450,8 +450,6 @@ void MainWindow::changeStatus(int val)
         m_trayIcon->setIcon(icon);
 
         this->ui->ipV4Label->setText(ip);
-        this->ui->ipV6Label->setText(ip6);
-        this->ui->dnsLabel->setText(dns);
         this->ui->cipherCSTPLabel->setText(cstp_cipher);
         this->ui->cipherDTLSLabel->setText(dtls_cipher);
 
@@ -499,8 +497,6 @@ void MainWindow::changeStatus(int val)
         cmd_fd = INVALID_SOCKET;
 
         ui->ipV4Label->clear();
-        ui->ipV6Label->clear();
-        ui->dnsLabel->clear();
         ui->uploadLabel->clear();
         ui->downloadLabel->clear();
         ui->cipherCSTPLabel->clear();
@@ -925,4 +921,3 @@ void MainWindow::on_actionRemoveSelectedProfile_triggered()
         reload_settings(); // LCA: remove this feature...
     }
 }
-
