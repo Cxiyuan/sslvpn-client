@@ -1,9 +1,10 @@
-# Windows 安装包打包说明
+# Windows MSI 打包说明
 
 ## 前提条件
-需要安装 NSIS (Nullsoft Scriptable Install System)
+需要安装 WiX Toolset 3.11 或更高版本
+- 下载地址: https://wixtoolset.org/releases/
 
-## 构建安装包
+## 构建 MSI 安装包
 
 ### 1. 在 Windows 上使用 CMake 构建项目
 
@@ -14,13 +15,13 @@ cmake -G "MinGW Makefiles" ..
 cmake --build .
 ```
 
-### 2. 生成安装包
+### 2. 生成 MSI 安装包
 
 ```bash
-cpack -G NSIS
+cpack -G WIX
 ```
 
-## 安装包特性
+## MSI 安装包特性
 
 - **默认安装路径**: C:\Program Files\aVPN
 - **简化安装界面**: 仅显示安装进度条，无需用户交互
@@ -30,16 +31,22 @@ cpack -G NSIS
 
 ## 安装方式
 
-直接双击安装包文件即可安装（显示进度条），或使用命令行：
+直接双击 MSI 文件即可安装（显示进度条和许可协议），或使用命令行：
 
 ```cmd
-aVPN-1.5.3-win64.exe /S
+msiexec /i aVPN-1.5.3-win64.msi
 ```
 
-## 完全静默安装（后台安装）
+## 完全静默安装（后台安装，无界面）
 
 ```cmd
-aVPN-1.5.3-win64.exe /S
+msiexec /i aVPN-1.5.3-win64.msi /quiet /qn
+```
+
+## 被动安装（仅显示进度条，无用户交互）
+
+```cmd
+msiexec /i aVPN-1.5.3-win64.msi /passive
 ```
 
 ## 自定义安装路径
@@ -47,5 +54,11 @@ aVPN-1.5.3-win64.exe /S
 默认路径为 C:\Program Files\aVPN，如需安装到指定路径：
 
 ```cmd
-aVPN-1.5.3-win64.exe /S /D=D:\MyPrograms\aVPN
+msiexec /i aVPN-1.5.3-win64.msi INSTALL_ROOT="D:\MyPrograms\aVPN"
+```
+
+## 组合选项（静默安装到自定义路径）
+
+```cmd
+msiexec /i aVPN-1.5.3-win64.msi INSTALL_ROOT="D:\aVPN" /quiet /qn
 ```
