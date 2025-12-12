@@ -31,8 +31,11 @@ jobs:
           echo "$wixBinPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
           Write-Host "Verifying WiX installation..."
-          $ErrorActionPreference = 'Continue'
-          & "$wixBinPath\candle.exe" -? 2>&1 | Select-Object -First 2
+          try {
+            & "$wixBinPath\candle.exe" -? 2>&1 | Select-Object -First 2 | Out-Null
+          } catch {
+            # candle -? returns exit code 1, which is expected
+          }
           Write-Host "WiX Toolset is ready"
         } else {
           Write-Host "ERROR: WiX Toolset not found"
