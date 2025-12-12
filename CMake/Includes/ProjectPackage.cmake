@@ -32,8 +32,18 @@ if(WIN32 AND MINGW)
     set(CPACK_WIX_PROPERTY_ARPHELPLINK "https://github.com/openconnect/openconnect-gui/wiki/FAQ")
     set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "https://openconnect.github.io/openconnect-gui")
     
-    # License
-    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+    # Skip license to speed up installation
+    # set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+    
+    # Optimize MSI for faster loading and installation
+    set(CPACK_WIX_LIGHT_EXTRA_FLAGS "-sval;-dcl:high")
+    set(CPACK_WIX_CANDLE_EXTRA_FLAGS "-sw1076")
+    
+    # Use simple progress-only UI
+    set(CPACK_WIX_UI_REF "WixUI_ProgressOnly")
+    
+    # Add optimization fragment
+    set(CPACK_WIX_EXTRA_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/wix_optimize.wxs")
     
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")

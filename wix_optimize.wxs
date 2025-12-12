@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <!-- Disable ICE validation checks that slow down package creation -->
+    <Property Id="ARPNOMODIFY" Value="1" />
+    <Property Id="ARPNOREPAIR" Value="1" />
+    
+    <!-- Optimize installation by reducing validation -->
+    <Property Id="ALLUSERS" Value="1" />
+    <Property Id="MSIINSTALLPERUSER" Value="0" />
+  </Fragment>
+</Wix>

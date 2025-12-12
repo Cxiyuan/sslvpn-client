@@ -28,6 +28,15 @@ cpack -G WIX
 - **开始菜单快捷方式**: 在开始菜单创建 aVPN 程序组
 - **支持升级和修复**: 标准 MSI 特性
 - **企业部署友好**: 支持 GPO 和静默安装
+- **优化加载速度**: 使用高压缩率和跳过验证优化安装体验
+
+## 优化说明
+
+已针对 MSI 安装包进行以下优化：
+- 使用 WixUI_ProgressOnly 简化界面，减少加载时间
+- 跳过许可协议界面，直接进入安装
+- 禁用部分 ICE 验证，加快打包和安装速度
+- 使用高压缩率减小安装包体积
 
 ## 安装方式
 
@@ -56,7 +65,3 @@ msiexec /i aVPN-1.5.3-win64.msi /passive
 ```cmd
 msiexec /i aVPN-1.5.3-win64.msi INSTALL_ROOT="D:\MyPrograms\aVPN"
 ```
-
-## 注意事项
-
-MSI 安装包首次加载可能需要一些时间，这是 Windows Installer 正常行为。安装包本身可以正常使用。
