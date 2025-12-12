@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </DirectoryRef>
+    
+    <DirectoryRef Id="CM_DP_bin">
+      <Component Id="DesktopShortcutComponent" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+        <RegistryValue Root="HKCU" 
+                      Key="Software\aVPN Team\aVPN" 
+                      Name="installed" 
+                      Type="integer" 
+                      Value="1" 
+                      KeyPath="yes"/>
+        <Shortcut Id="DesktopShortcut"
+                  Directory="DesktopFolder"
+                  Name="aVPN"
+                  Description="aVPN VPN Client"
+                  Target="[CM_DP_bin]avpn.exe"
+                  WorkingDirectory="CM_DP_bin" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
+  <Fragment>
+    <ComponentGroup Id="DesktopShortcuts">
+      <ComponentRef Id="DesktopShortcutComponent" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

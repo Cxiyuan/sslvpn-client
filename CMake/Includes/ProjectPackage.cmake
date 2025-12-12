@@ -32,16 +32,21 @@ if(WIN32 AND MINGW)
     set(CPACK_WIX_PROPERTY_ARPHELPLINK "https://github.com/openconnect/openconnect-gui/wiki/FAQ")
     set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "https://openconnect.github.io/openconnect-gui")
     
-    # UI configuration - use ProgressOnly (no license, just progress bar)
-    set(CPACK_WIX_UI_REF "WixUI_InstallDir")
-    set(CPACK_WIX_PROPERTY_WIXUI_INSTALLDIR "INSTALL_ROOT")
+    # UI configuration - minimal interaction
+    set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_SOURCE_DIR}/nsis/images/header-openconnect.bmp")
+    set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_SOURCE_DIR}/nsis/images/install-openconnect.bmp")
     
-    # Skip license by setting empty license
+    # License
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
-    set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/wix_license.rtf")
     
-    # Create desktop shortcut
-    set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_SOURCE_DIR}/wix_patch.xml")
+    # Desktop shortcut via extra wxs file
+    set(CPACK_WIX_EXTRA_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/wix_desktop_shortcut.wxs")
+    
+    # Add desktop shortcut component group to product feature
+    set(CPACK_WIX_PRODUCT_FEATURE "
+      <ComponentGroupRef Id='DesktopShortcuts' />
+    ")
+    set(CPACK_WIX_EXTENSIONS "WixUtilExtension")
     
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
