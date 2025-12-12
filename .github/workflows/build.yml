@@ -17,27 +17,6 @@ jobs:
         submodules: recursive
         lfs: true
     
-    - name: Install WiX Toolset
-      shell: powershell
-      run: |
-        $ErrorActionPreference = 'Continue'
-        
-        Write-Host "Installing WiX Toolset via Chocolatey..."
-        choco install wixtoolset -y --force
-        
-        Write-Host "Finding WiX installation directory..."
-        $wixPath = Get-ChildItem "C:\Program Files (x86)" -Filter "WiX Toolset*" -Directory -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($wixPath) {
-          $wixBinPath = Join-Path $wixPath.FullName "bin"
-          Write-Host "Found WiX at: $wixBinPath"
-          Add-Content -Path $env:GITHUB_PATH -Value $wixBinPath
-          Write-Host "WiX Toolset is ready"
-          exit 0
-        } else {
-          Write-Host "ERROR: WiX Toolset not found"
-          exit 1
-        }
-    
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
       with:
@@ -54,6 +33,7 @@ jobs:
           mingw-w64-x86_64-libxml2
           mingw-w64-x86_64-zlib
           mingw-w64-x86_64-jq
+          mingw-w64-x86_64-nsis
           autoconf
           automake
           libtool
@@ -179,13 +159,13 @@ jobs:
       shell: msys2 {0}
       run: |
         cd build
-        ls -la *.msi || echo "No MSI installer found in build directory"
+        ls -la *.exe || echo "No EXE installer found in build directory"
     
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
       with:
         name: avpn-windows-installer
-        path: build/*.msi
+        path: build/*.exe
         retention-days: 7
 
   build-linux:

@@ -21,30 +21,9 @@ if(WIN32 AND MINGW)
     if(CMAKE_CROSSCOMPILING AND MINGW)
         set(CPACK_GENERATOR "ZIP")
     else()
-        set(CPACK_GENERATOR "WIX")
+        set(CPACK_GENERATOR "NSIS")
     endif()
 
-    # WiX Configuration
-    set(CPACK_WIX_UPGRADE_GUID "12345678-1234-1234-1234-123456789012")
-    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.ico")
-    set(CPACK_WIX_PROGRAM_MENU_FOLDER "${PRODUCT_NAME_SHORT}")
-    set(CPACK_WIX_PROPERTY_ARPCOMMENTS "${PRODUCT_NAME_LONG}")
-    set(CPACK_WIX_PROPERTY_ARPHELPLINK "https://github.com/openconnect/openconnect-gui/wiki/FAQ")
-    set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "https://openconnect.github.io/openconnect-gui")
-    set(CPACK_WIX_PROPERTY_ARPPRODUCTICON "${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.ico")
-    
-    # Optimize MSI for faster loading
-    set(CPACK_WIX_LIGHT_EXTRA_FLAGS "-sval")
-    
-    # Use simple progress-only UI
-    set(CPACK_WIX_UI_REF "WixUI_Minimal")
-    
-    # Set custom UI bitmaps for installer dialog
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/nsis/images/install-openconnect.bmp")
-        set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_SOURCE_DIR}/nsis/images/header-openconnect.bmp")
-        set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_SOURCE_DIR}/nsis/images/install-openconnect.bmp")
-    endif()
-    
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
     set(CPACK_NSIS_HELP_LINK "https:\\\\\\\\github.com\\\\openconnect\\\\openconnect-gui\\\\wiki\\\\FAQ")
