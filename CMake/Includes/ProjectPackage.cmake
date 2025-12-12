@@ -24,11 +24,11 @@ if(WIN32 AND MINGW)
         set(CPACK_GENERATOR "NSIS")
     endif()
 
-    set(CPACK_NSIS_INSTALL_ROOT "C:")
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY "Program Files\\\\aVPN")
+    set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "aVPN")
     
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
-    set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
+    set(CPACK_NSIS_DISPLAY_NAME "aVPN")
     set(CPACK_NSIS_HELP_LINK "https:\\\\\\\\github.com\\\\openconnect\\\\openconnect-gui\\\\wiki\\\\FAQ")
     set(CPACK_NSIS_URL_INFO_ABOUT "https:\\\\\\\\openconnect.github.io\\\\openconnect-gui")
     set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
@@ -45,6 +45,9 @@ if(WIN32 AND MINGW)
     set(CPACK_MONOLITHIC_INSTALL ON)
     
     set(CPACK_NSIS_INSTALLER_MUI_FINISHPAGE_RUN OFF)
+    
+    set(CPACK_NSIS_ENABLE_DIRECTORY_PAGE OFF)
+    set(CPACK_NSIS_ENABLE_COMPONENTS_PAGE OFF)
 
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
     
