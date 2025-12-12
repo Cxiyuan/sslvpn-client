@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+  <Product Name='aVPN' Id='*' UpgradeCode='12345678-1234-1234-1234-123456789012'
+    Language='2052' Codepage='936' Version='1.5.3' Manufacturer='aVPN Team'>
+
+    <Package Id='*' Keywords='Installer' Description='aVPN Installer'
+      Comments='aVPN is a VPN client' Manufacturer='aVPN Team'
+      InstallerVersion='200' Languages='2052' Compressed='yes' SummaryCodepage='936' />
+
+    <Media Id='1' Cabinet='aVPN.cab' EmbedCab='yes' />
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder'>
+        <Directory Id='INSTALLDIR' Name='aVPN'>
+        </Directory>
+      </Directory>
+      
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id='MainExecutable' Guid='*'>
+        <File Id='avpnEXE' Source='avpn.exe' KeyPath='yes'>
+          <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="aVPN"
+            WorkingDirectory='INSTALLDIR' Icon="aVPN.ico" IconIndex="0" Advertise="yes" />
+          <Shortcut Id="startmenuShortcut" Directory="ProgramMenuDir" Name="aVPN"
+            WorkingDirectory='INSTALLDIR' Icon="aVPN.ico" IconIndex="0" Advertise="yes" />
+        </File>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ProgramMenuFolder">
+      <Directory Id="ProgramMenuDir" Name="aVPN">
+        <Component Id="ProgramMenuDir" Guid="*">
+          <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+          <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <Feature Id='Complete' Level='1'>
+      <ComponentRef Id='MainExecutable' />
+      <ComponentRef Id='ProgramMenuDir' />
+    </Feature>
+
+    <Icon Id="aVPN.ico" SourceFile="src/avpn.ico" />
+
+    <Property Id="ARPPRODUCTICON" Value="aVPN.ico" />
+    
+    <UIRef Id="WixUI_ProgressOnly" />
+    
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+  </Product>
+</Wix>

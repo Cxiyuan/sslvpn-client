@@ -21,8 +21,22 @@ if(WIN32 AND MINGW)
     if(CMAKE_CROSSCOMPILING AND MINGW)
         set(CPACK_GENERATOR "ZIP")
     else()
-        set(CPACK_GENERATOR "NSIS")
+        set(CPACK_GENERATOR "WIX")
     endif()
+
+    set(CPACK_WIX_PRODUCT_GUID "*")
+    set(CPACK_WIX_UPGRADE_GUID "12345678-1234-1234-1234-123456789012")
+    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\src\\\\${PROJECT_NAME}.ico")
+    set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_SOURCE_DIR}\\\\nsis\\\\images\\\\header-openconnect.bmp")
+    set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_SOURCE_DIR}\\\\nsis\\\\images\\\\install-openconnect.bmp")
+    set(CPACK_WIX_PROGRAM_MENU_FOLDER "${PRODUCT_NAME_SHORT}")
+    set(CPACK_WIX_PROPERTY_ARPCOMMENTS "${PRODUCT_NAME_LONG}")
+    set(CPACK_WIX_PROPERTY_ARPHELPLINK "https://github.com/openconnect/openconnect-gui/wiki/FAQ")
+    set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "https://openconnect.github.io/openconnect-gui")
+    
+    set(CPACK_WIX_SKIP_PROGRAM_FOLDER TRUE)
+    
+    set(CPACK_WIX_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/aVPN.wxs")
 
     set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
