@@ -307,12 +307,12 @@ static void setup_tun_vfn(void* privdata)
     VpnInfo* vpn = static_cast<VpnInfo*>(privdata);
 
     QString vpncScriptFullPath = QCoreApplication::applicationDirPath() 
-        % QDir::separator() 
-        % QLatin1String(DEFAULT_VPNC_SCRIPT);
+        + QDir::separator() 
+        + QLatin1String(DEFAULT_VPNC_SCRIPT);
     int ret = openconnect_setup_tun_device(vpn->vpninfo, vpncScriptFullPath.toLatin1().constData(), NULL);
     if (ret != 0) {
         vpn->last_err = QObject::tr("Error setting up the TUN device");
-        Logger::instance().addMessage(QObject::tr("TUN device setup failed: ") % QString::number(ret));
+        Logger::instance().addMessage(QObject::tr("TUN device setup failed: ") + QString::number(ret));
     }
 
     vpn->logVpncScriptOutput();
