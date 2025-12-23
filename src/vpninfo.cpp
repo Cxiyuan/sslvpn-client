@@ -84,15 +84,15 @@ static int process_auth_form(void* privdata, struct oc_auth_form* form)
     int i, idx;
 
     if (form->banner) {
-        Logger::instance().addMessage(QLatin1String(form->banner));
+        Logger::instance().addMessage(QString::fromUtf8(form->banner));
     }
 
     if (form->message) {
-        Logger::instance().addMessage(QLatin1String(form->message));
+        Logger::instance().addMessage(QString::fromUtf8(form->message));
     }
 
     if (form->error) {
-        Logger::instance().addMessage(QLatin1String(form->error));
+        Logger::instance().addMessage(QString::fromUtf8(form->error));
     }
 
     int empty = 1;
@@ -138,11 +138,11 @@ static int process_auth_form(void* privdata, struct oc_auth_form* form)
 
             Logger::instance().addMessage(QLatin1String("Saving group: ") + text);
             vpn->ss->set_groupname(text);
-        }
-
-        if (vpn->authgroup_set == 0) {
-            vpn->authgroup_set = 1;
-            return OC_FORM_RESULT_NEWGROUP;
+            
+            if (vpn->authgroup_set == 0) {
+                vpn->authgroup_set = 1;
+                return OC_FORM_RESULT_NEWGROUP;
+            }
         }
     }
 
